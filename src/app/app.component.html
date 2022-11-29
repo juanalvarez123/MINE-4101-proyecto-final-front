@@ -1,0 +1,43 @@
+<!-- Toolbar -->
+<div class="toolbar" role="banner">
+  <img width="30" alt="Escudo Ciudad de Medellín" src="./../assets/Escudo_Medellin.png" />
+  <span>Dashboard - Hurtos en Medellín</span>
+</div>
+
+<div class="content" role="main">
+
+  <div class="card highlight-card card-small">
+    <span>Mapa Segmentación - Hurtos en Medellín</span>
+  </div>
+
+  <div class="list">
+    <p class="label">Lista de Modelos para visualizar</p>
+    <select #models (change)="onSelected()" class="select">
+      <option default>Seleccione un Modelo</option>
+      <option value="1">Modelo 1</option>
+      <option value="2">Modelo 2</option>
+      <option value="3">Modelo 3</option>
+      <option value="4">Modelo 4</option>
+      <option value="5">Modelo 5</option>
+      <option value="6">Modelo 6</option>
+      <option value="7">Modelo 7</option>
+      <option value="8">Modelo 8</option>
+      <option value="9">Modelo 9</option>
+      <option value="10">Modelo 10</option>
+      <option value="11">Modelo 11</option>
+    </select>
+  </div>
+  <div class="map-container">
+    <div class="map-frame">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>
+<div class="convencion">
+  <div>Menos Peligroso</div>
+  <div class="escala"></div>
+  <div>Más Peligroso</div>
+</div>
+
+<div class="footer"></div>
+<router-outlet></router-outlet>
