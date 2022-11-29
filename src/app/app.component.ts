@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import * as L from 'leaflet';
-import { ShapeService } from './shape.service';
+import {ShapeService} from './shape.service';
 import * as chroma from 'chroma-js'
 
 @Component({
@@ -9,15 +9,22 @@ import * as chroma from 'chroma-js'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
+
   private colors: string[] = chroma.scale(['#00bcd4','#4CAF50','#FFEB3B','#F44336']).mode('lch').colors(20)
   private map!: L.Map;
   private states: any;
   private clusters: any;
   @ViewChild('models') models!: ElementRef;
   selectedModel = 0;
+
   onSelected(): void {
     this.selectedModel = this.models.nativeElement.value;
     let modelId = Number(this.selectedModel) + 4;
+
+    if (Number.isNaN(modelId)) {
+      alert('Selecciona un modelo válido')
+      return
+    }
 
     this.shapeService.getClusters(modelId).subscribe(clusters => {
       this.clusters = clusters
@@ -27,16 +34,13 @@ export class AppComponent implements AfterViewInit {
         let clusterInfo = barriosList.find((barrio: { barrio: string; }) => barrio.barrio === element.properties.CODIGO);
         let clusterId = clusterInfo ? clusterInfo.cluster : -5
         let colorId = (clusterId/modelId)*20
-        //console.log('COLOR_ID: '+colorId+' CLUSTER: '+clusterId)
         element.properties.PRINT_COLOR = this.getColor(Math.round(colorId))
 
       });
       let barrios = this.states
       this.initStatesLayer(barrios);
     })
-
   }
-
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -52,13 +56,12 @@ export class AppComponent implements AfterViewInit {
 
     tiles.addTo(this.map);
   }
+
   constructor(
     private shapeService: ShapeService,) {
-
   }
 
   private initStatesLayer(barrios: any) {
-
     const stateLayer = L.geoJSON(barrios, {
       style: function (feature) {
         let color: string = feature?.properties.PRINT_COLOR
@@ -69,7 +72,6 @@ export class AppComponent implements AfterViewInit {
           color: '#000000',
           fillOpacity: 0.9,
           fillColor: color,
-
         }
       }
     });
@@ -77,7 +79,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
     this.initMap();
     console.log(this.colors)
     this.shapeService.getStateShapes().subscribe(states => {
@@ -90,9 +91,7 @@ export class AppComponent implements AfterViewInit {
           let clusterInfo = barriosList.find((barrio: { barrio: string; }) => barrio.barrio === element.properties.CODIGO);
           let clusterId = clusterInfo ? clusterInfo.cluster : -5
           let colorId = (clusterId/5)*20
-          //console.log('COLOR_ID: '+colorId+' CLUSTER: '+clusterId)
           element.properties.PRINT_COLOR = this.getColor(Math.round(colorId))
-
         });
         let barrios = this.states
         this.initStatesLayer(barrios);
@@ -102,8 +101,6 @@ export class AppComponent implements AfterViewInit {
 
   private getColor(colorId: number): String {
     if (colorId > -1) {
-      //console.log(colorId)
-      
       return this.colors[colorId]
     }
     else {
