@@ -94,7 +94,7 @@ export class AppComponent implements AfterViewInit {
         let barriosList: any[] = this.clusters.barrios
         this.states.features.forEach((element: any) => {
 
-          let clusterInfo = barriosList.find((barrio: { barrio: string; }) => barrio.barrio === element.properties.CODIGO);
+          let clusterInfo = barriosList.find((barrio: { barrio: string; }) => barrio.barrio.toLowerCase() === element.properties.CODIGO.toLowerCase());
           let clusterId = clusterInfo ? clusterInfo.cluster : -5
           let colorId = (clusterId / 1) * 19
           element.properties.PRINT_COLOR = this.getColor(Math.round(colorId))
