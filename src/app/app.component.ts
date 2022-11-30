@@ -19,7 +19,7 @@ export class AppComponent implements AfterViewInit {
 
   onSelected(): void {
     this.selectedModel = this.models.nativeElement.value;
-    let modelId = Number(this.selectedModel) + 4;
+    let modelId = Number(this.selectedModel);
 
     if (Number.isNaN(modelId)) {
       alert('Selecciona un modelo válido')
