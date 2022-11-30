@@ -83,14 +83,14 @@ export class AppComponent implements AfterViewInit {
     console.log(this.colors)
     this.shapeService.getStateShapes().subscribe(states => {
       this.states = states;
-      this.shapeService.getClusters(5).subscribe(clusters => {
+      this.shapeService.getClusters(1).subscribe(clusters => {
         this.clusters = clusters
         let barriosList: any[] = this.clusters.barrios
         this.states.features.forEach((element: any) => {
 
           let clusterInfo = barriosList.find((barrio: { barrio: string; }) => barrio.barrio === element.properties.CODIGO);
           let clusterId = clusterInfo ? clusterInfo.cluster : -5
-          let colorId = (clusterId/5)*20
+          let colorId = (clusterId/1)*20
           element.properties.PRINT_COLOR = this.getColor(Math.round(colorId))
         });
         let barrios = this.states
