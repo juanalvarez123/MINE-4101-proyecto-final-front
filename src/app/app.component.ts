@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as L from 'leaflet';
-import {ShapeService} from './shape.service';
+import { ShapeService } from './shape.service';
 import * as chroma from 'chroma-js'
 
 @Component({
@@ -10,7 +10,7 @@ import * as chroma from 'chroma-js'
 })
 export class AppComponent implements AfterViewInit {
 
-  private colors: string[] = chroma.scale(['#00bcd4','#4CAF50','#FFEB3B','#F44336']).mode('lch').colors(20)
+  private colors: string[] = chroma.scale(['#00bcd4', '#4CAF50', '#FFEB3B', '#F44336']).mode('lch').colors(20)
   private map!: L.Map;
   private states: any;
   private clusters: any;
@@ -33,7 +33,13 @@ export class AppComponent implements AfterViewInit {
 
         let clusterInfo = barriosList.find((barrio: { barrio: string; }) => barrio.barrio.toLowerCase() === element.properties.CODIGO.toLowerCase());
         let clusterId = clusterInfo ? clusterInfo.cluster : -5
-        let colorId = (clusterId/modelId)*20
+        let colorId
+        if (modelId == 1) {
+          colorId = 0
+        } else {
+          colorId = (clusterId / (modelId-1)) * 19 
+        }
+
         element.properties.PRINT_COLOR = this.getColor(Math.round(colorId))
 
       });
@@ -90,7 +96,7 @@ export class AppComponent implements AfterViewInit {
 
           let clusterInfo = barriosList.find((barrio: { barrio: string; }) => barrio.barrio === element.properties.CODIGO);
           let clusterId = clusterInfo ? clusterInfo.cluster : -5
-          let colorId = (clusterId/1)*20
+          let colorId = (clusterId / 1) * 19
           element.properties.PRINT_COLOR = this.getColor(Math.round(colorId))
         });
         let barrios = this.states
@@ -104,7 +110,7 @@ export class AppComponent implements AfterViewInit {
       return this.colors[colorId]
     }
     else {
-      console.log("Negativo:"+colorId)
+      console.log("Negativo:" + colorId)
       return '#FFFFFF'
     }
   }
